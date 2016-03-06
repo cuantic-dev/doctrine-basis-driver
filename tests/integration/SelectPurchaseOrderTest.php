@@ -2,7 +2,7 @@
 
 use Cuantic\Basis\Tests\TestsBootstrap;
 
-class SelectInvoiceHeaderTest extends PHPUnit_Framework_TestCase
+class SelectPurchaseOrderTest extends PHPUnit_Framework_TestCase
 {
 	public function setUp()
 	{
@@ -13,10 +13,9 @@ class SelectInvoiceHeaderTest extends PHPUnit_Framework_TestCase
     public function testSelectInvoiceHeader()
     {
         $purchaseOrder = $this->entityManager->getRepository('Cuantic\Basis\Tests\Models\PurchaseOrder')
-            ->find(8526);
+            ->findById([8526, 8517]);
 
-        var_dump($purchaseOrder);exit;
-
-        $this->assertNotNull($invoiceHeader);
+        $this->assertArrayHasKey(0, $purchaseOrder);
+        $this->assertArrayHasKey(1, $purchaseOrder);
     }
 }
