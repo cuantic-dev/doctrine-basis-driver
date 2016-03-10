@@ -12,7 +12,7 @@ use Psr\Log\LoggerInterface;
  * BasisDriver implementation of Driver interface.
  *
  * @author Mauro Katzenstein <maurok@cuantic.com>
- * @link   https://bitbucket.org/Cuantic-api/dynamics-crm-dbal
+ * @link   https://github.com/mauroak/doctrine-basis-driver
  * @since  1.0
  */
 class BasisDriver implements Driver

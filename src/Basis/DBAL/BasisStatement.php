@@ -11,7 +11,7 @@ use Cuantic\Basis\RequestBuilder;
  * This resembles (a subset of) the PDOStatement interface.
  *
  * @author Mauro Katzenstein <maurok@cuantic.com>
- * @link   https://bitbucket.org/Cuantic-api/dynamics-crm-dbal
+ * @link   https://github.com/mauroak/doctrine-basis-driver
  * @since  1.0
  */
 class BasisStatement implements \IteratorAggregate, DriverStatement
@@ -23,6 +23,7 @@ class BasisStatement implements \IteratorAggregate, DriverStatement
     protected $params = [];
     protected $result = null;
     protected $fetchIndex = null;
+    protected $rowCount = 0;
 
     /**
      * Initializes a new instance of the Statement class.
@@ -165,7 +166,9 @@ class BasisStatement implements \IteratorAggregate, DriverStatement
      */
     protected function doExecute($request)
     {
-        return $this->connectionHandle->execute($request);
+        $response = $this->connectionHandle->execute($request);
+        $this->rowCount = $response['rowCount'];
+        return $response['payload'];
     }
 
     /**
@@ -176,9 +179,9 @@ class BasisStatement implements \IteratorAggregate, DriverStatement
      *
      * @return integer The number of rows.
      */
-    function rowCount()
+    public function rowCount()
     {
-        $this->not_yet_implemented(get_class(), __FUNCTION__);
+        return $this->rowCount;
     }
 
     /**
@@ -257,11 +260,14 @@ class BasisStatement implements \IteratorAggregate, DriverStatement
      * Returns a single column from the next row of a result set.
      *
      * @param integer $columnIndex
-     *
      * @return mixed A single column from the next row of a result set or FALSE if there are no more rows.
      */
     public function fetchColumn($columnIndex = 0)
     {
-        $this->not_yet_implemented(get_class(), __FUNCTION__);
+        $row = $this->fetch(\PDO::FETCH_NUM);
+        if ($row && isset($row[$columnIndex])) {
+            return $row[$columnIndex];
+        }
+        return false;
     }
 }

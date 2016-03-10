@@ -12,7 +12,7 @@ use Doctrine\DBAL\Types\Type;
  * They are a passive source of information.
  *
  * @author Mauro Katzenstein <maurok@cuantic.com>
- * @link   https://bitbucket.org/Cuantic-api/dynamics-crm-dbal
+ * @link   https://github.com/mauroak/doctrine-basis-driver
  * @since  1.0
  */
 class BasisPlatform extends AbstractPlatform
@@ -153,5 +153,27 @@ class BasisPlatform extends AbstractPlatform
     public function getDateFormatString()
     {
         return 'dmy';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function doModifyLimitQuery($query, $limit, $offset)
+    {
+        if ($limit !== null) {
+            $query .= ' LIMIT ' . $limit;
+            $query .= ',' . (($offset) ? $offset : 1);
+        }
+        return $query;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTruncateTableSQL($tableName, $cascade = false)
+    {
+        $tableIdentifier = new Identifier($tableName);
+        $tableName = str_replace('.', '__', $tableIdentifier->getQuotedName($this));
+        return 'DELETE FROM ' . $tableName;
     }
 }

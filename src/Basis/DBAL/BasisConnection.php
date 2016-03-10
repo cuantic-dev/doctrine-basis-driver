@@ -2,6 +2,7 @@
 
 namespace Cuantic\Basis\DBAL;
 
+use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\Connection;
 use Psr\Log\LoggerInterface;
 
@@ -11,7 +12,7 @@ use Cuantic\Basis\BasisLowLevelConnector;
  * Connection to a Basis database.
  *
  * @author Mauro Katzenstein <maurok@cuantic.com>
- * @link   https://bitbucket.org/Cuantic-api/dynamics-crm-dbal
+ * @link   https://github.com/mauroak/doctrine-basis-driver
  * @since  1.0
  */
 class BasisConnection implements Connection
@@ -116,8 +117,7 @@ class BasisConnection implements Connection
      */
     function beginTransaction()
     {
-    	$this->to_do_implement(get_class(), __FUNCTION__);
-        return true;
+        return false;
     }
 
     /**
@@ -127,19 +127,17 @@ class BasisConnection implements Connection
      */
     function commit()
     {
-        $this->to_do_implement(get_class(), __FUNCTION__);
-    	return true;
+    	return false;
     }
 
     /**
      * Rolls back the current transaction, as initiated by beginTransaction().
      *
-     * @return boolean TRUE on success or FALSE on failure.
+     * @throws DBALException due to Basis does not support transactions
      */
     function rollBack()
     {
-    	$this->to_do_implement(get_class(), __FUNCTION__);
-        return true;
+        throw new DBALException('Basis does not support transactions');
     }
 
     /**

@@ -9,7 +9,7 @@ use Doctrine\DBAL\Schema\AbstractSchemaManager;
  * modify the database schema/structure.
  *
  * @author Mauro Katzenstein <maurok@cuantic.com>
- * @link   https://bitbucket.org/Cuantic-api/dynamics-crm-dbal
+ * @link   https://github.com/mauroak/doctrine-basis-driver
  * @since  1.0
  */
 class BasisSchemaManager extends AbstractSchemaManager

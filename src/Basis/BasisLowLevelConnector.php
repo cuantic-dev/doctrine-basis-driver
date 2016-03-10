@@ -72,17 +72,40 @@ class BasisLowLevelConnector
 
 		$rawResult = $this->pipe_exec($command);
 
-		$result = json_decode($rawResult['stdOut'], true);
+		$stdOut = (substr($rawResult['stdOut'], 0, 6) == "'null'") ?
+			substr($rawResult['stdOut'], 6, strlen($rawResult['stdOut'])) :
+			$rawResult['stdOut'];
+
+		$result = json_decode($stdOut, true);
 
 		if(is_null($result)) {
 			throw new DBALException('Error while connecting to BASIS: '.$rawResult['stdOut']);
 		}
 
-		if($result['success'] == 'false') {
-			throw new DBALException(implode(', ', $result->error));
+		if(!array_key_exists('success', $result) || $result['success'] !== 'true') {
+			if(array_key_exists('error', $result)) {
+				$errorMsgs = [];
+				foreach($result['error'] as $error) {
+					$errorPrefix = 'Hubo un error al ejecutar el query. ';
+					$errorMsgs[] = (substr($error, 0, strlen($errorPrefix)) == $errorPrefix) ?
+						substr($error, strlen($errorPrefix), strlen($error)) :
+						$error;
+				}
+
+				throw new DBALException(implode(', ', $errorMsgs));
+			} else {
+				throw new DBALException(sprintf(
+					'Uncaught error while connecting to BASIS. Raw response: "%s", Stderr: "%s"',
+					$rawResult['stdOut'],
+					$rawResult['stdErr']
+				));
+			}
 		}
 
-		return $result['row'];
+		return [
+			'payload' 	=> !array_key_exists('row', $result) ?: $result['row'],
+			'rowCount' 	=> !array_key_exists('rowCount', $result) ?: $result['rowCount']
+		];
 	}
 
 	protected function pipe_exec($cmd, $input='') {

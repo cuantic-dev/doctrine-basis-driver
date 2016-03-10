@@ -4,43 +4,36 @@ namespace Cuantic\Basis\DBAL;
 
 use Doctrine\ORM\Id\AbstractIdGenerator;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\QueryBuilder;
 
 
 /**
  * Id generator for Basis.
  *
  * @author Mauro Katzenstein <maurok@cuantic.com>
- * @link   https://bitbucket.org/Cuantic-api/dynamics-crm-dbal
+ * @link   https://github.com/mauroak/doctrine-basis-driver
  * @since  1.0
  */
 class BasisIdGenerator extends AbstractIdGenerator
 {
     /**
-     * The name of the sequence to pass to lastInsertId(), if any.
-     *
-     * @var string
-     */
-    private $sequenceName;
-
-    /**
-     * Constructor.
-     *
-     * @param string|null $sequenceName The name of the sequence to pass to lastInsertId()
-     *                                  to obtain the last generated identifier within the current
-     *                                  database session/connection, if any.
-     */
-    public function __construct($sequenceName = null)
-    {
-        $this->sequenceName = $sequenceName;
-    }
-
-    /**
      * {@inheritDoc}
      */
-    public function generate(
-        EntityManager $em, $entity)
+    public function generate(EntityManager $em, $entity)
     {
-        return $em->getConnection()->lastInsertId($this->sequenceName);
+        throw new \Exception('Id generator is not yet implemented');
+        $meta = $em->getClassMetadata(get_class($entity));
+        $identifier = $meta->getSingleIdentifierFieldName();
+
+        /** @var QueryBuilder */
+        $qb = $em->createQueryBuilder();
+        $lastInsertedObject = $qb
+            ->select($qb->expr()->max($identifier))
+            ->from(get_class($entity))
+            ->getQuery()
+            ->execute();
+
+        return (int)$lastInsertedObject->$identifier + 1;
     }
 
     /**
