@@ -64,8 +64,8 @@ class BasisLowLevelConnector
 			'java -cp %sInterfazVPro.jar com.cuantic.interfaz.vpro.Query %s %s %s %s "%s"',
 			$jarPath,
 			$this->config['host'],
-			$this->config['database'],
-			$this->config['username'],
+			$this->config['dbname'],
+			$this->config['user'],
 			$this->config['password'],
 			$statement
 		);
