@@ -9,10 +9,10 @@
         }
     ],
     "require": {
-        "doctrine/orm": "2.5.0",
-        "doctrine/dbal": "2.5.0",
+        "doctrine/orm": "2.5.*",
+        "doctrine/dbal": "2.5.*",
         "kevinlebrun/colors.php": "0.*",
-        "monolog/monolog": "^1.18",
+        "monolog/monolog": "1.8.*",
         "adambrett/shell-wrapper": "^0.6.0"
     },
     "require-dev": {

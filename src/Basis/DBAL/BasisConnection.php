@@ -32,7 +32,7 @@ class BasisConnection implements Connection
     public function __construct(array $params, LoggerInterface $logger = null)
     {
         $this->params = $params;
-        $this->connecitonHandle = new BasisLowLevelConnector($params['driverOptions'], $logger);
+        $this->connecitonHandle = new BasisLowLevelConnector($params, $logger);
     }
 
     /**

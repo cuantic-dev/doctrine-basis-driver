@@ -41,10 +41,10 @@ class BasisLowLevelConnector
 		if(!array_key_exists('host', $config)) {
 			throw new DBALException('BASIS host must be set in database config.');
 		}
-		if(!array_key_exists('database', $config)) {
+		if(!array_key_exists('dbname', $config)) {
 			throw new DBALException('BASIS database name must be set in database config.');
 		}
-		if(!array_key_exists('username', $config)) {
+		if(!array_key_exists('user', $config)) {
 			throw new DBALException('BASIS username must be set in database config.');
 		}
 		if(!array_key_exists('password', $config)) {
@@ -64,8 +64,8 @@ class BasisLowLevelConnector
 			'java -cp %sInterfazVPro.jar com.cuantic.interfaz.vpro.Query %s %s %s %s "%s"',
 			$jarPath,
 			$this->config['host'],
-			$this->config['database'],
-			$this->config['username'],
+			$this->config['dbname'],
+			$this->config['user'],
 			$this->config['password'],
 			$statement
 		);
