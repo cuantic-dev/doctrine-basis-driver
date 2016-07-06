@@ -59,7 +59,7 @@ class BasisLowLevelConnector
 
 	public function execute($statement)
 	{
-		$jarPath = './';
+		$jarPath = __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR;
 		$command = sprintf(
 			'java -cp %sInterfazVPro.jar com.cuantic.interfaz.vpro.Query %s %s %s %s "%s"',
 			$jarPath,
