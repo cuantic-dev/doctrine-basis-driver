@@ -7,7 +7,7 @@ use Doctrine\DBAL\Types\StringType as BaseStringType;
 
 class StringType extends BaseStringType
 {
-    const TRIMMED_STRING = 'trimmedString';
+    const STRING = 'string';
 
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
@@ -16,6 +16,6 @@ class StringType extends BaseStringType
 
     public function getName()
     {
-        return self::TRIMMED_STRING;
+        return self::STRING;
     }
 }
