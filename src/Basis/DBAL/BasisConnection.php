@@ -83,7 +83,7 @@ class BasisConnection implements Connection
             return sprintf('%F', $value);
         }
 
-        return mysql_escape_string($value);
+        return mysqli_escape_string($value);
     }
 
     /**
