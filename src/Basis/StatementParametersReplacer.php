@@ -166,7 +166,8 @@ class StatementParametersReplacer
                 return (int) $valueAndType['value'];
                 break;
             case PDO::PARAM_STR:
-                return "'{$valueAndType['value']}'";
+                $aux = str_replace('"', '\\"', str_replace("'", "''", $valueAndType['value']));
+                return "'{$aux}'";
                 break;
             case PDO::PARAM_BOOL:
             case PDO::PARAM_LOB:
